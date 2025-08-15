@@ -1,9 +1,7 @@
 # 🤖 Computer Vision Lab (MLOps Playground)
 
 Hello there! 👋  
-
-I’d be really happy if I knew you were here 🙂  
-
+ 
 This repo is my **personal journey into MLOps** — I’m trying to stitch together a **full pipeline** that connects everything from model training, deployment, and monitoring, all the way to a nice UI.  
 
 The goal is simple: **learn MLOps by building something fun.**
