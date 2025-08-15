@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Health(BaseModel):
     model_config = {"protected_namespaces": ()}
     status: str = "ok"

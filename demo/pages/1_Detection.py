@@ -1,4 +1,9 @@
-import os, io, base64, requests, streamlit as st
+import base64
+import io
+import os
+
+import requests
+import streamlit as st
 from PIL import Image
 from ui_utils import draw_boxes
 

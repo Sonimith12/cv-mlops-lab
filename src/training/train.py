@@ -1,6 +1,9 @@
-import os, json, yaml
+import json
+import os
 from pathlib import Path
+
 import wandb
+import yaml
 from ultralytics import YOLO
 
 p = yaml.safe_load(open("params.yaml"))["train"]

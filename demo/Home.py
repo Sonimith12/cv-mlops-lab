@@ -1,4 +1,7 @@
-import os, requests, streamlit as st
+import os
+
+import requests
+import streamlit as st
 
 st.set_page_config(page_title="CV Lab — Home", page_icon="🤖", layout="wide")
 

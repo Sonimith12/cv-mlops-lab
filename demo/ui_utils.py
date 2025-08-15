@@ -1,5 +1,6 @@
-from PIL import Image, ImageDraw, ImageFont
 from typing import Dict, List, Tuple
+
+from PIL import Image, ImageDraw, ImageFont
 
 COLOR = {
     "person": (0, 180, 255),

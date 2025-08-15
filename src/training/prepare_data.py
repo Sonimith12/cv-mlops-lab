@@ -1,7 +1,8 @@
-from pathlib import Path
 import random
-from PIL import Image, ImageDraw
+from pathlib import Path
+
 import yaml
+from PIL import Image, ImageDraw
 
 out = Path("data/processed")
 (out / "images").mkdir(parents=True, exist_ok=True)

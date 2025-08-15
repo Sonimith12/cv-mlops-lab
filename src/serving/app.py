@@ -8,8 +8,8 @@ from fastapi import Body, FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from PIL import Image
 
+from .inference import get_cls, get_det, get_seg
 from .schemas import Health
-from .inference import get_det, get_seg, get_cls
 
 app = FastAPI(title="CV API", version="1.0", docs_url="/docs")
 

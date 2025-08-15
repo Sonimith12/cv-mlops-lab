@@ -1,4 +1,9 @@
-import os, io, base64, requests, streamlit as st
+import base64
+import io
+import os
+
+import requests
+import streamlit as st
 from PIL import Image
 
 st.set_page_config(page_title="Classification", layout="wide")
