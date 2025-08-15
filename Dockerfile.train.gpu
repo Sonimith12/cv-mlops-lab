@@ -1,0 +1,6 @@
+FROM pytorch/pytorch:2.3.1-cuda12.1-cudnn8-runtime
+WORKDIR /app
+COPY requirements.train.txt .
+RUN pip install --no-cache-dir -r requirements.train.txt
+COPY . .
+CMD ["bash","-lc","python -m src.training.prepare_data && python -m src.training.train && python -m src.training.package"]

@@ -1,0 +1,8 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.ui.txt .
+RUN pip install --no-cache-dir -r requirements.ui.txt
+COPY . .
+ENV PORT=8501 API_URL=http://localhost:8080
+EXPOSE 8501
+CMD ["sh","-lc","streamlit run demo/Home.py --server.address 0.0.0.0 --server.port ${PORT:-8501}"]
