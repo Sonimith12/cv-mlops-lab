@@ -44,17 +44,26 @@ Assuming you have Docker installed:
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/cv-mlops-lab.git
+git clone https://github.com/Sonimith12/cv-mlops-lab.git
 cd cv-mlops-lab
 
+# --- Option 1: Run everything with docker compose ---
+docker compose up --build
+
+# --- Option 2: Run with Docker directly ---
+
 # Build the API image
-docker build -t cv-api -f docker/Dockerfile.api .
+docker build -t cv-api -f docker/dockerfile.serve .
 
 # Run the API container
 docker run -d -p 8080:8080 cv-api
 
 # Build the UI image
-docker build -t cv-ui -f docker/Dockerfile.ui .
+docker build -t cv-ui -f docker/dockerfile.ui .
 
-# Run the UI container
+# Run the UI container (connects to API)
 docker run -d -p 8501:8501 -e API_URL=http://host.docker.internal:8080 cv-ui
+
+
+
+
