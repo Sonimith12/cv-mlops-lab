@@ -1,18 +1,30 @@
-version: "3.9"
 services:
   api:
-    build: { context: ., dockerfile: Dockerfile.serve }
-    image: ppe-mlops:serve
-    environment:
-      - MODEL_BACKEND=yolo
-      - MODEL_PATH=yolov8n.pt
-      - PORT=8080
+    build:
+      context: .
+      dockerfile: Dockerfile.serve
+    container_name: cv-api
     ports: ["8080:8080"]
-  ui:
-    build: { context: ., dockerfile: Dockerfile.ui }
-    image: ppe-mlops:ui
     environment:
-      - API_URL=http://api:8080
-      - PORT=8501
+      DET_MODEL_PATH: /app/models/yolov8n.pt
+      SEG_MODEL_PATH: /app/models/yolov8n-seg.pt
+      CLS_MODEL_PATH: /app/models/yolov8n-cls.pt
+    volumes:
+      - ./models:/app/models
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    container_name: cv-ui
     ports: ["8501:8501"]
-    depends_on: [api]
+    environment:
+      API_URL: http://api:8080
+    depends_on:
+      api:
+        condition: service_healthy

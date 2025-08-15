@@ -1,9 +1,11 @@
 import os
 from functools import lru_cache
 from typing import Any, Dict, List
+from pathlib import Path
 
 from PIL import Image
 
+MODELS_DIR = Path(os.getenv("MODELS_DIR", "/models")).resolve()
 
 class BaseService:
     model_version: str = "unknown"

@@ -1,15 +1,39 @@
 FROM python:3.11-slim
-WORKDIR /app
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 
-# system libs
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential git libgl1 libglib2.0-0 libsm6 libxext6 \
+    build-essential git curl \
+    libgl1 libglib2.0-0 libsm6 libxext6 ffmpeg \
  && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.api.txt .
-RUN pip install --no-cache-dir -r requirements.api.txt
-COPY . .
-ENV PORT=8080 MODEL_BACKEND=yolo MODEL_PATH=yolov8n.pt
+COPY requirements.api.txt /tmp/requirements.txt
+RUN python -m pip install --upgrade pip && \
+    pip install --no-cache-dir -r /tmp/requirements.txt
+
+COPY src/ /app/src/
+COPY scripts/ /app/scripts/
+COPY scripts/entrypoint.api.sh /app/scripts/entrypoint.api.sh
+RUN chmod +x /app/scripts/entrypoint.api.sh
+
+RUN mkdir -p /app/models
+
+ENV PORT=8080 \
+    MODEL_BACKEND=yolo \
+    # default model path; your inference code can also read DET_MODEL_PATH
+    MODEL_PATH=/app/models/yolov8n.pt \
+    DET_MODEL_PATH=/app/models/yolov8n.pt \
+    SEG_MODEL_PATH=/app/models/yolov8n-seg.pt \
+    CLS_MODEL_PATH=/app/models/yolov8n-cls.pt \
+    MODELS_DIR=/app/models \
+    # make ultralytics cache stay inside container (optional)
+    ULTRALYTICS_CACHE=/app/models/.ultralytics
+
 EXPOSE 8080
-CMD ["sh","-lc","uvicorn src.serving.app:app --host 0.0.0.0 --port ${PORT:-8080}"]
+
+ENTRYPOINT ["/app/scripts/entrypoint.api.sh"]
+CMD ["uvicorn", "src.serving.app:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1"]
