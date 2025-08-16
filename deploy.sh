@@ -84,7 +84,17 @@ else
 fi
 
 # ---- Deploy API ----
-gcloud run deploy cv-api --image "$API_IMG" --allow-unauthenticated --region "$REGION" --quiet
+gcloud run deploy cv-api \
+  --image "$API_IMG" \
+  --region "$REGION" \
+  --allow-unauthenticated \
+  --cpu=2 \
+  --memory=4Gi \
+  --concurrency=1 \
+  --min-instances=1 \
+  --timeout=600 \
+  --quiet
+
 API_URL=$(gcloud run services describe cv-api --region "$REGION" --format='value(status.url)')
 [ -n "$API_URL" ] || die "Failed to resolve API URL."
 echo "API_URL=$API_URL"
