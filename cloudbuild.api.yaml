@@ -1,0 +1,18 @@
+substitutions:
+  _REGION: europe-west1  
+  _REPO: cv
+  _IMAGE: api
+  _TAG: v1
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-f'
+      - Dockerfile.serve
+      - '-t'
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/$_IMAGE:$_TAG'
+      - '.'
+
+images:
+  - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO/$_IMAGE:$_TAG'
